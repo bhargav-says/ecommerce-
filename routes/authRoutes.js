@@ -15,6 +15,12 @@ router.post("/login",loginC)
 //test Route 
 router.get("/test",requireSignin,isAdmin,testC)
 
+//protected Routes
+
+router.get("/user-auth",requireSignin ,(req,res)=>{
+    res.status(200).send({ok:true})
+})
+
 
 
 

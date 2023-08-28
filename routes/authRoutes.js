@@ -1,5 +1,5 @@
 const express = require("express")
-const {registerC, loginC, testC} = require("../controllers/authContollers")
+const {registerC, loginC, testC,forgerPassC} = require("../controllers/authContollers")
 const { requireSignin, isAdmin } = require("../Middleware/authmiddleware")
 
 const router = express.Router()
@@ -14,7 +14,8 @@ router.post("/login",loginC)
 
 //test Route 
 router.get("/test",requireSignin,isAdmin,testC)
-
+//forgot-password || post
+ router.post("/forgotpassworddd",forgerPassC)
 //protected Routes
 
 router.get("/user-auth",requireSignin ,(req,res)=>{

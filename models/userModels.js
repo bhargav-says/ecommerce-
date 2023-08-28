@@ -30,6 +30,10 @@ const userSchema = new Schema({
         type:String,
         required:true
     },
+    answer:{
+        type:Date,
+        required:true
+    },
     role:{
         type:Number,
         default:0

@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken")
 
 const registerC = async(req,res)=>{
     try{
-        const{name,email,password,Phone,Address} = req.body;
-        if(!name||!email||!password||!Phone||!Address)
+        const{name,email,password,Phone,Address,answer} = req.body;
+        if(!name||!email||!password||!Phone||!Address || !answer)
         {
             res.status(400).json({
                 message:"All fields are required"
@@ -27,7 +27,7 @@ const registerC = async(req,res)=>{
         const hashPassword = await hashedPassword(password)
 
         //save
-        const user = await userModels.create({name,email,password:hashPassword,Address,Phone})
+        const user = await userModels.create({name,email,password:hashPassword,Address,Phone,answer})
         if(user){
             res.status(200).json({
                 _id:user._id ,email:user.email,password:user.password,
@@ -78,7 +78,7 @@ const loginC = async(req,res)=>{
 
        }
        //token
-       const token = await jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"7d",
+       const token = await jwt.sign({_id:user._id},process.env.JWT_SECRET,{expiresIn:"1000d",
          
     })
      res.status(200).json({
@@ -112,7 +112,54 @@ const testC = (req,res)=>{
      
     res.send("Test route accessed!");
 }
+const forgerPassC =async(req,res)=>{
+
+    try{
+         const {email,answer, newPassword} =req.body
+         if(!email){
+            res.status(400).json({
+                message:"Email Required"
+            })
+
+         }
+         if(!answer){
+            res.status(400).json({
+                message:"Answer is required"
+            })
+         }
+         if(!newPassword){
+            res.status(400).json({
+                message:"Password Is Required"
+            })
+         }
+         //check 
+         const user = await userModels.findOne({email,answer})
+         if(!user){
+            return res.status(400).json({
+              success:false,
+              message:"Wrong Email or Answer"
+            })
+         }
+            
+         const hased =await hashedPassword(newPassword)
+        await userModels.findByIdAndUpdate(user._id,{password:hased});
+         res.status(200).json({
+            success:true,
+            message:"Password reset successfully"
+         })         
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:"Something went Wrong",
+            err
+        })
+
+        
+    }
+}
 
    
 
-module.exports = {registerC,loginC,testC}
+module.exports = {registerC,loginC,testC ,forgerPassC}

@@ -16,12 +16,17 @@ router.post("/login",loginC)
 router.get("/test",requireSignin,isAdmin,testC)
 //forgot-password || post
  router.post("/forgotpassworddd",forgerPassC)
-//protected Routes
+
+ //protected Routes for User
 
 router.get("/user-auth",requireSignin ,(req,res)=>{
     res.status(200).send({ok:true})
 })
 
+//Protect Routes admin 
+router.get("/admin-auth",requireSignin,isAdmin ,(req,res)=>{
+    res.status(200).send({ok:true})
+})
 
 
 

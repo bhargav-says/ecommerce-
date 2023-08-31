@@ -89,7 +89,8 @@ const loginC = async(req,res)=>{
             name:user.name,
             email:user.email,
             phone:user.Phone,
-            address:user.Address
+            address:user.Address,
+            role:user.role
 
         },
         token,

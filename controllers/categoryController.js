@@ -1,10 +1,10 @@
-const { default: slugify } = require("slugify")
+var slugify  = require("slugify")
 const categoryModel = require("../models/categoryModel")
-const userModels = require("../models/userModels")
+
 
 const createCategoryC = async (req,res)=>{
   try{
-      const name = req.body
+      const {name} = req.body
       if(!name){
         return res.status(400).json({
             success:false,
@@ -19,7 +19,8 @@ const createCategoryC = async (req,res)=>{
             message:"Category already exists"
         })
     }
-    const categry = await new categoryModel({name,slug:slugify}).save()
+    const slug =slugify(name)
+    const categry = await new categoryModel({name,slug}).save()
     res.status(200).send(
         {
             success:true,

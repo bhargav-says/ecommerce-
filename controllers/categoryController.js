@@ -85,4 +85,33 @@ const getCategoryC = async(req,res)=>{
    }
 
 
-module.exports={createCategoryC,updateCategoryC,getCategoryC}
+//Single category Controller
+
+
+const singleCategoryC =async(req,res)=>{
+    try{
+        const {slug} =req.params;
+
+
+      const category = await categoryModel.findOne({slug})
+      res.status(200).json({
+        success:true,
+        category
+      })
+    }
+
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:"Something went Wrong",
+            err
+        })
+
+    }
+}
+
+ 
+
+
+module.exports={createCategoryC,updateCategoryC,getCategoryC,singleCategoryC}

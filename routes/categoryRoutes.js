@@ -1,6 +1,6 @@
 const express = require("express")
 const { requireSignin, isAdmin } = require("../Middleware/authmiddleware")
-const { createCategoryC ,updateCategoryC ,getCategoryC} = require("../controllers/categoryController")
+const { createCategoryC ,updateCategoryC ,getCategoryC,singleCategoryC} = require("../controllers/categoryController")
 
 
 const router = express.Router()
@@ -18,5 +18,9 @@ requireSignin,isAdmin,updateCategoryC)
 
 //get all catergory
 router.get("/getcategories",getCategoryC)
+
+
+//Single Category
+router.get("/singlecategory/:slug", singleCategoryC)
  
 module.exports =router

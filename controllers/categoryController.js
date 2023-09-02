@@ -1,7 +1,7 @@
 var slugify  = require("slugify")
 const categoryModel = require("../models/categoryModel")
 
-
+//create category Controller
 const createCategoryC = async (req,res)=>{
   try{
       const {name} = req.body
@@ -39,4 +39,23 @@ const createCategoryC = async (req,res)=>{
 
   }
 }
-module.exports={createCategoryC}
+
+
+ const updateCategoryC = async(req,res)=>{
+   try{ 
+    const {name } = req.body;
+    const {id} = req.params
+    const category = await categoryModel.findByIdAndUpdate(id,{name})
+
+   }
+   catch(err){
+    console.log(err)
+    res.status(400).json({
+        success:false,
+        message:"Something went Wrong",
+        err
+    })
+   }  
+
+}
+module.exports={createCategoryC,updateCategoryC}

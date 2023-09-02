@@ -143,7 +143,7 @@ const forgerPassC =async(req,res)=>{
          }
             
          const hased =await hashedPassword(newPassword)
-        await userModels.findByIdAndUpdate(user._id,{password:hased});
+        await userModels.findByIdAndUpdate(user._id,{password:hased},{new:true});
          res.status(200).json({
             success:true,
             message:"Password reset successfully"

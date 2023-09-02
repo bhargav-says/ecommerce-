@@ -40,12 +40,18 @@ const createCategoryC = async (req,res)=>{
   }
 }
 
+//update category
 
  const updateCategoryC = async(req,res)=>{
    try{ 
     const {name } = req.body;
     const {id} = req.params
-    const category = await categoryModel.findByIdAndUpdate(id,{name})
+    const category = await categoryModel.findByIdAndUpdate(id,{name,slug:slugify(name)},{new:true})
+      res.status(200).json({
+        success:true,
+        message:" Updated Successfully",
+        category
+      })
 
    }
    catch(err){
@@ -55,7 +61,28 @@ const createCategoryC = async (req,res)=>{
         message:"Something went Wrong",
         err
     })
-   }  
+   }  }
 
-}
-module.exports={createCategoryC,updateCategoryC}
+const getCategoryC = async(req,res)=>{
+    try{
+        const category = await categoryModel.find({}).lean()
+        res.status(200).json({
+            message:"all categories",
+            success:true,
+            category
+        })
+        
+
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:'something went wrong',
+            err
+        })
+    }
+   }
+
+
+module.exports={createCategoryC,updateCategoryC,getCategoryC}

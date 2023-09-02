@@ -1,6 +1,6 @@
 const express = require("express")
 const { requireSignin, isAdmin } = require("../Middleware/authmiddleware")
-const { createCategoryC ,updateCategoryC} = require("../controllers/categoryController")
+const { createCategoryC ,updateCategoryC ,getCategoryC} = require("../controllers/categoryController")
 
 
 const router = express.Router()
@@ -11,8 +11,12 @@ requireSignin,isAdmin
 ,createCategoryC)
 
 
-
-router.put("/update-category",
+//update Category
+router.put("/update-category/:id",
 requireSignin,isAdmin,updateCategoryC)
+
+
+//get all catergory
+router.get("/getcategories",getCategoryC)
  
 module.exports =router

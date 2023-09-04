@@ -4,6 +4,7 @@ const express = require("express")
  const {connectDB} =require("./Config/db")
  const  authRoutes =require("./routes/authRoutes")
  const categoryRoutes = require("./routes/categoryRoutes")
+ const productRoute =require("./routes/productRoutes")
 
  const cors = require("cors")
 
@@ -21,6 +22,7 @@ const express = require("express")
  //Routes
  app.use("/api/v1/auth",authRoutes)
  app.use("/api/v1/category",categoryRoutes)
+ app.use("/api/v1/product",productRoute)
 
  
 

@@ -47,6 +47,26 @@ const createProductC =async(req,res)=>{
         })
     }
 }
+const getProductC = async(req,res)=>{
+    try{
+        
+        const product = await productModel.find({}).select("-photo").lean()
+        return res.status(200).send({
+            success:true,
+            message:"done",
+            product
+        })
+
+    }
+    catch(err){
+        console.log(err)
+        return res.status(200).json({
+            success:false,
+            message:"Something Went Wwrong",
+            err
+        })
+    }
+}
 
 
-module.exports ={createProductC}
+module.exports ={createProductC,getProductC}

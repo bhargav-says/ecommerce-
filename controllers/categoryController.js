@@ -111,7 +111,32 @@ const singleCategoryC =async(req,res)=>{
     }
 }
 
+//delete Controller
+const deleteC = async(req,res)=>{
+    try{
+        const {id} = req.params;
+     const d = await categoryModel.findByIdAndDelete(id)
+     res.status(200).json({
+        success:true,
+        message:"Sucessfully deleted",
+        d
+
+     })
+
+
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:"Something Went Wrong",
+            err
+        })
+    }
+
+}
+
  
 
 
-module.exports={createCategoryC,updateCategoryC,getCategoryC,singleCategoryC}
+module.exports={createCategoryC,updateCategoryC,getCategoryC,singleCategoryC,deleteC}

@@ -3,8 +3,7 @@ const productModel = require("../models/productModel")
 const fs = require("fs")
 
 
-
-
+// create Product Controller
 const createProductC =async(req,res)=>{
 
     try{
@@ -47,14 +46,18 @@ const createProductC =async(req,res)=>{
         })
     }
 }
+
+// get Producrt controller
 const getProductC = async(req,res)=>{
     try{
         
         const product = await productModel.find({}).select("-photo").lean()
         return res.status(200).send({
             success:true,
+            TotalCount :product.length,
             message:"done",
-            product
+            product,
+           
         })
 
     }
@@ -68,5 +71,21 @@ const getProductC = async(req,res)=>{
     }
 }
 
+const getAProductC =async(req,res)=>{
+    try{
 
-module.exports ={createProductC,getProductC}
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:"Something Went Wrong",
+            err
+
+        })
+    }
+
+}
+
+
+module.exports ={createProductC,getProductC,getAProductC}

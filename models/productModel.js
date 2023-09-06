@@ -22,7 +22,7 @@ const productModel = new Schema({
     },
     category:{
         type:mongoose.ObjectId,
-        ref:"Category",
+        ref:"categories",
         require:true
 
 

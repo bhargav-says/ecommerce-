@@ -47,11 +47,14 @@ const createProductC =async(req,res)=>{
     }
 }
 
-// get Producrt controller
+// get Product controller
 const getProductC = async(req,res)=>{
     try{
         
-        const product = await productModel.find({}).select("-photo").lean()
+        const product = await productModel.find({}).
+        populate('category').
+        select("-photo")
+        .lean()
         return res.status(200).send({
             success:true,
             TotalCount :product.length,
@@ -71,8 +74,25 @@ const getProductC = async(req,res)=>{
     }
 }
 
+//get Single Product
 const getAProductC =async(req,res)=>{
     try{
+        const {slug} = req.params;
+        const product =await productModel.findOne({slug}).select("-photo").populate({path:"category",select:"name slug -_id"})
+        if(!product){
+            return res.status(400).json({
+                success:false,
+                message:"Product no found"
+            })
+
+        }
+        else{
+            return res.status(200).json({
+                success:true,
+                message:"Item Found",
+                product
+            })
+        }
 
     }
     catch(err){
@@ -87,5 +107,24 @@ const getAProductC =async(req,res)=>{
 
 }
 
+const getPhotoC =async(req,res)=>{
+    try{
+        const product = await productModel.findById(req.params.pid).select("photo")
+        if(product.photo.data){
+            res.set('Content-Type',product.photo.contentType)
+            return res.status(200).send(product.photo.data)
+        }
 
-module.exports ={createProductC,getProductC,getAProductC}
+    }
+    catch(err){
+        console.log(err)
+        return res.status(400).json({
+            success:false,
+            message:"SomeThing Went Wrong",
+            err
+        })
+    }
+}
+
+
+module.exports ={createProductC,getProductC,getAProductC,getPhotoC}

@@ -1,6 +1,6 @@
 const express = require("express");
 const { requireSignin, isAdmin } = require("../Middleware/authmiddleware");
-const { createProductC,getProductC,getAProductC,getPhotoC } = require("../controllers/productController");
+const { createProductC,getProductC,getAProductC,getPhotoC,deleteProductC,updateProductC } = require("../controllers/productController");
 const formidable = require("express-formidable")
 
 
@@ -21,4 +21,17 @@ router.get("/getaproduct/:slug", getAProductC)
 
 router.get("/productphoto/:pid",getPhotoC)
 
+
+// delete
+router.delete("/deleteproduct/:pid",deleteProductC)
 module.exports =router;
+
+
+//update product
+
+
+router.put ("/updateproduct/:pid",
+   requireSignin,
+   isAdmin,
+   formidable(),
+ updateProductC)

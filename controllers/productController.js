@@ -14,7 +14,9 @@ const createProductC =async(req,res)=>{
         {
             return res.status(400).json({
                 success:false,
-                message:"All fields Are required"
+                message:"All fields Are required",
+                
+                
 
             })
         }
@@ -25,7 +27,7 @@ const createProductC =async(req,res)=>{
             })
         }
 
-        const products = new  productModel({...req.fields,slug:slugify(name)})
+        const products = new productModel({...req.fields,slug:slugify(name)})
         if(photo){
             products.photo.data =fs.readFileSync(photo.path)
             products.contentType = photo.type
@@ -47,7 +49,7 @@ const createProductC =async(req,res)=>{
     }
 }
 
-// get Product controller
+//get Product controller
 const getProductC = async(req,res)=>{
     try{
         
@@ -122,9 +124,77 @@ const getPhotoC =async(req,res)=>{
             success:false,
             message:"SomeThing Went Wrong",
             err
+          })
+    }
+}
+
+
+// delete product Controller
+const deleteProductC = async(req,res)=>{
+    try{
+       const pid = req.params
+       const product = await productModel.findByIdAndDelete(pid)
+       return res.status(200).json({
+        success:true,
+        message:"item deleted successfully",
+        product
+       })
+    }
+    catch(err){
+        console.log(err)
+        res.status(400).json({
+            success:false,
+            message:"something went Wrong",
+            err
         })
     }
 }
 
 
-module.exports ={createProductC,getProductC,getAProductC,getPhotoC}
+
+
+
+const updateProductC = async(req,res)=>{
+    try{
+        const {name, slug,description, price,category, quantity,shipping} =req.fields;
+        const {photo} = req.files;
+
+        if(!name || !description || !price || !category || !quantity)
+        {
+            return res.status(400).json({
+                success:false,
+                message:"All fields Are required"
+
+            })
+        }
+        if(!photo && photo.size>100000){
+            return res.status(400).json({
+                success:false,
+                message:"photo is required and Should be less than 1mb"
+            })
+        }
+
+        const products = await productModel.findByIdAndUpdate(req.params.pid,{...req.fields ,slug:slugify(name)},{new:true})
+        if(photo){
+            products.photo.data =fs.readFileSync(photo.path)
+            products.contentType = photo.type
+        }
+        await products.save()
+        res.status(200).json({
+            success:true,
+            message:"product created Successfully",
+            products
+        })
+    }
+    catch(err){
+        console.log(err)
+        return res.status(400).json({
+            success:false,
+            message:'Something went Wrong',
+            err
+        })
+    }
+}
+
+
+module.exports ={createProductC,getProductC,getAProductC,getPhotoC,deleteProductC,updateProductC}

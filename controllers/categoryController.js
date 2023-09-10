@@ -63,6 +63,8 @@ const createCategoryC = async (req,res)=>{
     })
    }  }
 
+//get All category contoller
+
 const getCategoryC = async(req,res)=>{
     try{
         const category = await categoryModel.find({}).lean()

@@ -23,7 +23,7 @@ router.get("/productphoto/:pid",getPhotoC)
 
 
 // delete
-router.delete("/deleteproduct/:pid",deleteProductC)
+router.delete("/deleteproduct/:pid",requireSignin,isAdmin,deleteProductC)
 module.exports =router;
 
 

@@ -132,7 +132,7 @@ const getPhotoC =async(req,res)=>{
 // delete product Controller
 const deleteProductC = async(req,res)=>{
     try{
-       const pid = req.params
+       const {pid} = req.params
        const product = await productModel.findByIdAndDelete(pid)
        return res.status(200).json({
         success:true,
